@@ -15,4 +15,23 @@ test.group('Users users', () => {
       status: 409,
     })
   })
+
+  test('Its should be return 422 when password have no required min length', async ({
+    client,
+    assert,
+  }) => {
+    const user = { name: 'Usertest', email: 'email@email.com', password: '1234' }
+
+    const response = await client.post('/users').json(user)
+
+    response.assertBodyContains({
+      errors: [
+        {
+          rule: 'minLength',
+          field: 'password',
+          message: 'minLength validation failed',
+        },
+      ],
+    })
+  })
 })
