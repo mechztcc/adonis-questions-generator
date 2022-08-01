@@ -8,9 +8,11 @@ test.group('Users users', () => {
     const anotherUser = { name: 'Usertest', email: user.email, password: '123456' }
 
     const response = await client.post('/users').json(anotherUser)
-    console.log(response.body())
-    const body = response.body()
 
-    response.assertBodyContains({ code: 'BAD_REQUEST', message: 'E-mail already in use' })
+    response.assertBodyContains({
+      code: 'BAD_REQUEST',
+      message: 'E-mail already in use',
+      status: 409,
+    })
   })
 })
