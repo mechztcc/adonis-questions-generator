@@ -8,5 +8,4 @@ services:
       - 3333:3333
     volumes:
       - .:/home/node/app
-    depends_on:
-      - db_test
+    
