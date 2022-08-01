@@ -15,4 +15,10 @@ export default class UsersController {
     const user = await User.create(payload)
     return response.created(user)
   }
+
+  public async index({ request, response }: HttpContextContract) {
+    const users = await User.query().from('users').select('*')
+
+    return response.accepted(users)
+  }
 }
