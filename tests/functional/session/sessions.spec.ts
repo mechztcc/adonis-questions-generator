@@ -1,5 +1,4 @@
 import { test } from '@japa/runner'
-import User from 'App/Models/User'
 import { UserFactory } from 'Database/factories'
 
 test.group('Sessions sessions', () => {
@@ -9,5 +8,20 @@ test.group('Sessions sessions', () => {
     const response = await client.post('/sessions').json({ email: user.email, password: '123456' })
 
     response.assertStatus(201)
+  })
+
+  test('It should be return 400 when try to create a sessions with invalid password', async ({
+    client,
+    assert,
+  }) => {
+    const user = await UserFactory.create()
+
+    const response = await client
+      .post('/sessions')
+      .json({ email: user.email, password: 'wrong-password' })
+
+    response.assertBodyContains({
+      errors: [{ message: 'E_INVALID_AUTH_PASSWORD: Password mis-match' }],
+    })
   })
 })
